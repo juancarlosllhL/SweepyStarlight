@@ -77,7 +77,7 @@ export function ComponentConfigSchema() {
 			/**
 			 * Header component displayed at the top of every page.
 			 * The default implementation displays `<SiteTitle />`, `<Search />`, `<SocialIcons />`,
-			 * `<ThemeSelect />`, and `<LanguageSelect />`.
+			 * `<ThemeSelect />`.
 			 *
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/Header.astro `Header` default implementation}
 			 */
@@ -109,12 +109,6 @@ export function ComponentConfigSchema() {
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/ThemeSelect.astro `ThemeSelect` default implementation}
 			 */
 			ThemeSelect: z.string().default('@lansweeper/sweepy-starlight/components/ThemeSelect.astro'),
-			/**
-			 * Component rendered in the site header that allows users to switch to a different language.
-			 *
-			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/LanguageSelect.astro `LanguageSelect` default implementation}
-			 */
-			LanguageSelect: z.string().default('@lansweeper/sweepy-starlight/components/LanguageSelect.astro'),
 
 			/*
 			SIDEBAR -------------------------------------------------------------------------------------
@@ -131,7 +125,7 @@ export function ComponentConfigSchema() {
 			Sidebar: z.string().default('@lansweeper/sweepy-starlight/components/Sidebar.astro'),
 			/**
 			 * Component rendered at the bottom of the mobile drop-down menu.
-			 * The default implementation renders `<ThemeSelect />` and `<LanguageSelect />`.
+			 * The default implementation renders`<LanguageSelect />`.
 			 *
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/MobileMenuFooter.astro `MobileMenuFooter` default implementation}
 			 */

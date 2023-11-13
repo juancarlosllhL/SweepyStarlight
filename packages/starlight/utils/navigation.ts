@@ -2,9 +2,7 @@ import { basename, dirname } from 'node:path';
 import config from 'virtual:starlight/user-config';
 import type { PrevNextLinkConfig } from '../schemas/prevNextLink';
 import { pathWithBase } from './base';
-import { pickLang } from './i18n';
-import { getLocaleRoutes, type Route } from './routing';
-import { localeToLang, slugToPathname } from './slugs';
+import { routes, type Route } from './routing';
 import { ensureLeadingAndTrailingSlashes, ensureTrailingSlash } from './path';
 import type { Badge } from '../schemas/badge';
 import type {
@@ -63,18 +61,17 @@ function isDir(data: Record<string, unknown>): data is Dir {
 function configItemToEntry(
 	item: SidebarItem,
 	currentPathname: string,
-	locale: string | undefined,
 	routes: Route[]
 ): SidebarEntry {
 	if ('link' in item) {
-		return linkFromConfig(item, locale, currentPathname);
+		return linkFromConfig(item, currentPathname);
 	} else if ('autogenerate' in item) {
-		return groupFromAutogenerateConfig(item, locale, routes, currentPathname);
+		return groupFromAutogenerateConfig(item, routes, currentPathname);
 	} else {
 		return {
 			type: 'group',
-			label: pickLang(item.translations, localeToLang(locale)) || item.label,
-			entries: item.items.map((i) => configItemToEntry(i, currentPathname, locale, routes)),
+			label: item.label,
+			entries: item.items.map((i) => configItemToEntry(i, currentPathname, routes)),
 			collapsed: item.collapsed,
 			badge: item.badge,
 		};
@@ -84,24 +81,22 @@ function configItemToEntry(
 /** Autogenerate a group of links from a user’s sidebar config. */
 function groupFromAutogenerateConfig(
 	item: AutoSidebarGroup,
-	locale: string | undefined,
 	routes: Route[],
 	currentPathname: string
 ): Group {
 	const { collapsed: subgroupCollapsed, directory } = item.autogenerate;
-	const localeDir = locale ? locale + '/' + directory : directory;
 	const dirDocs = routes.filter(
 		(doc) =>
 			// Match against `foo.md` or `foo/index.md`.
-			stripExtension(doc.id) === localeDir ||
+			stripExtension(doc.id) === directory ||
 			// Match against `foo/anything/else.md`.
-			doc.id.startsWith(localeDir + '/')
+			doc.id.startsWith(directory + '/')
 	);
-	const tree = treeify(dirDocs, localeDir);
+	const tree = treeify(dirDocs);
 	return {
 		type: 'group',
-		label: pickLang(item.translations, localeToLang(locale)) || item.label,
-		entries: sidebarFromDir(tree, currentPathname, locale, subgroupCollapsed ?? item.collapsed),
+		label: item.label,
+		entries: sidebarFromDir(tree, currentPathname, subgroupCollapsed ?? item.collapsed),
 		collapsed: item.collapsed,
 		badge: item.badge,
 	};
@@ -113,16 +108,13 @@ const isAbsolute = (link: string) => /^https?:\/\//.test(link);
 /** Create a link entry from a user config object. */
 function linkFromConfig(
 	item: SidebarLinkItem,
-	locale: string | undefined,
 	currentPathname: string
 ) {
 	let href = item.link;
 	if (!isAbsolute(href)) {
 		href = ensureLeadingAndTrailingSlashes(href);
-		// Inject current locale into link.
-		if (locale) href = '/' + locale + href;
 	}
-	const label = pickLang(item.translations, localeToLang(locale)) || item.label;
+	const label =  item.label;
 	return makeLink(href, label, currentPathname, item.badge, item.attrs);
 }
 
@@ -140,31 +132,23 @@ function makeLink(
 }
 
 /** Get the segments leading to a page. */
-function getBreadcrumbs(path: string, baseDir: string): string[] {
+function getBreadcrumbs(path: string): string[] {
 	// Strip extension from path.
 	const pathWithoutExt = stripExtension(path);
-	// Index paths will match `baseDir` and don’t include breadcrumbs.
-	if (pathWithoutExt === baseDir) return [];
-	// Ensure base directory ends in a trailing slash.
-	if (!baseDir.endsWith('/')) baseDir += '/';
-	// Strip base directory from path if present.
-	const relativePath = pathWithoutExt.startsWith(baseDir)
-		? pathWithoutExt.replace(baseDir, '')
-		: pathWithoutExt;
-	let dir = dirname(relativePath);
+	let dir = dirname(pathWithoutExt);
 	// Return no breadcrumbs for items in the root directory.
 	if (dir === '.') return [];
 	return dir.split('/');
 }
 
 /** Turn a flat array of routes into a tree structure. */
-function treeify(routes: Route[], baseDir: string): Dir {
+function treeify(routes: Route[]): Dir {
 	const treeRoot: Dir = makeDir();
 	routes
 		// Remove any entries that should be hidden
 		.filter((doc) => !doc.entry.data.sidebar.hidden)
 		.forEach((doc) => {
-			const breadcrumbs = getBreadcrumbs(doc.id, baseDir);
+			const breadcrumbs = getBreadcrumbs(doc.id);
 
 			// Walk down the route’s path to generate the tree.
 			let currentDir = treeRoot;
@@ -183,7 +167,7 @@ function treeify(routes: Route[], baseDir: string): Dir {
 /** Create a link entry for a given content collection entry. */
 function linkFromRoute(route: Route, currentPathname: string): Link {
 	return makeLink(
-		slugToPathname(route.slug),
+		route.slug,
 		route.entry.data.sidebar.label || route.entry.data.title,
 		currentPathname,
 		route.entry.data.sidebar.badge,
@@ -205,15 +189,11 @@ function getOrder(routeOrDir: Route | Dir): number {
 /** Sort a directory’s entries by user-specified order or alphabetically if no order specified. */
 function sortDirEntries(
 	dir: [string, Dir | Route][],
-	locale: string | undefined
 ): [string, Dir | Route][] {
-	const collator = new Intl.Collator(localeToLang(locale));
-	return dir.sort(([keyA, a], [keyB, b]) => {
+	return dir.sort(([_, a], [__, b]) => {
 		const [aOrder, bOrder] = [getOrder(a), getOrder(b)];
 		// Pages are sorted by order in ascending order.
-		if (aOrder !== bOrder) return aOrder < bOrder ? -1 : 1;
-		// If two pages have the same order value they will be sorted by their slug.
-		return collator.compare(isDir(a) ? keyA : a.slug, isDir(b) ? keyB : b.slug);
+		 return aOrder < bOrder ? -1 : 1;
 	});
 }
 
@@ -223,11 +203,10 @@ function groupFromDir(
 	fullPath: string,
 	dirName: string,
 	currentPathname: string,
-	locale: string | undefined,
 	collapsed: boolean
 ): Group {
-	const entries = sortDirEntries(Object.entries(dir), locale).map(([key, dirOrRoute]) =>
-		dirToItem(dirOrRoute, `${fullPath}/${key}`, key, currentPathname, locale, collapsed)
+	const entries = sortDirEntries(Object.entries(dir)).map(([key, dirOrRoute]) =>
+		dirToItem(dirOrRoute, `${fullPath}/${key}`, key, currentPathname, collapsed)
 	);
 	return {
 		type: 'group',
@@ -244,11 +223,10 @@ function dirToItem(
 	fullPath: string,
 	dirName: string,
 	currentPathname: string,
-	locale: string | undefined,
 	collapsed: boolean
 ): SidebarEntry {
 	return isDir(dirOrRoute)
-		? groupFromDir(dirOrRoute, fullPath, dirName, currentPathname, locale, collapsed)
+		? groupFromDir(dirOrRoute, fullPath, dirName, currentPathname, collapsed)
 		: linkFromRoute(dirOrRoute, currentPathname);
 }
 
@@ -256,22 +234,20 @@ function dirToItem(
 function sidebarFromDir(
 	tree: Dir,
 	currentPathname: string,
-	locale: string | undefined,
 	collapsed: boolean
 ) {
-	return sortDirEntries(Object.entries(tree), locale).map(([key, dirOrRoute]) =>
-		dirToItem(dirOrRoute, key, key, currentPathname, locale, collapsed)
+	return sortDirEntries(Object.entries(tree)).map(([key, dirOrRoute]) =>
+		dirToItem(dirOrRoute, key, key, currentPathname, collapsed)
 	);
 }
 
 /** Get the sidebar for the current page. */
-export function getSidebar(pathname: string, locale: string | undefined): SidebarEntry[] {
-	const routes = getLocaleRoutes(locale);
+export function getSidebar(pathname: string): SidebarEntry[] {
 	if (config.sidebar) {
-		return config.sidebar.map((group) => configItemToEntry(group, pathname, locale, routes));
+		return config.sidebar.map((group) => configItemToEntry(group, pathname, routes));
 	} else {
-		const tree = treeify(routes, locale || '');
-		return sidebarFromDir(tree, pathname, locale, false);
+		const tree = treeify(routes);
+		return sidebarFromDir(tree, pathname, false);
 	}
 }
 

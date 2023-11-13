@@ -39,8 +39,6 @@ const pagefindEnabled =
 ---
 
 <html
-	lang={Astro.props.lang}
-	dir={Astro.props.dir}
 	data-has-toc={Boolean(Astro.props.toc)}
 	data-has-sidebar={Astro.props.hasSidebar}
 	data-has-hero={Boolean(Astro.props.entry.data.hero)}
@@ -84,8 +82,6 @@ const pagefindEnabled =
 				<PageSidebar slot="right-sidebar" {...Astro.props} />
 				<main
 					data-pagefind-body={pagefindEnabled}
-					lang={Astro.props.entryMeta.lang}
-					dir={Astro.props.entryMeta.dir}
 				>
 					{/* TODO: Revisit how this logic flows. */}
 					<Banner {...Astro.props} />

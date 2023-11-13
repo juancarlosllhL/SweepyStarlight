@@ -7,8 +7,6 @@ import { getFileCommitDate } from './git';
 import { getPrevNextLinks, getSidebar, type SidebarEntry } from './navigation';
 import { ensureTrailingSlash } from './path';
 import type { Route } from './routing';
-import { localizedId } from './slugs';
-import { useTranslations } from './translations';
 
 interface PageProps extends Route {
 	headings: MarkdownHeading[];
@@ -38,8 +36,8 @@ export function generateRouteData({
 	props: PageProps;
 	url: URL;
 }): StarlightRouteData {
-	const { entry, locale } = props;
-	const sidebar = getSidebar(url.pathname, locale);
+	const { entry } = props;
+	const sidebar = getSidebar(url.pathname);
 	return {
 		...props,
 		sidebar,
@@ -51,7 +49,7 @@ export function generateRouteData({
 	};
 }
 
-function getToC({ entry, locale, headings }: PageProps) {
+function getToC({ entry, headings }: PageProps) {
 	const tocConfig =
 		entry.data.template === 'splash'
 			? false
@@ -59,10 +57,9 @@ function getToC({ entry, locale, headings }: PageProps) {
 			? entry.data.tableOfContents
 			: config.tableOfContents;
 	if (!tocConfig) return;
-	const t = useTranslations(locale);
 	return {
 		...tocConfig,
-		items: generateToC(headings, { ...tocConfig, title: t('tableOfContents.overview') }),
+		items: generateToC(headings, { ...tocConfig, title: "tableOfContents.overview" }),
 	};
 }
 
@@ -80,7 +77,7 @@ function getLastUpdated({ entry }: PageProps): Date | undefined {
 	return;
 }
 
-function getEditUrl({ entry, id, isFallback }: PageProps): URL | undefined {
+function getEditUrl({ entry, id }: PageProps): URL | undefined {
 	const { editUrl } = entry.data;
 	// If frontmatter value is false, editing is disabled for this page.
 	if (editUrl === false) return;
@@ -91,9 +88,8 @@ function getEditUrl({ entry, id, isFallback }: PageProps): URL | undefined {
 		url = editUrl;
 	} else if (config.editLink.baseUrl) {
 		const srcPath = project.srcDir.replace(project.root, '');
-		const filePath = isFallback ? localizedId(id, config.defaultLocale.locale) : id;
 		// If a base URL was added in Starlight config, synthesize the edit URL from it.
-		url = ensureTrailingSlash(config.editLink.baseUrl) + srcPath + 'content/docs/' + filePath;
+		url = ensureTrailingSlash(config.editLink.baseUrl) + srcPath + 'content/docs/' + id;
 	}
 	return url ? new URL(url) : undefined;
 }

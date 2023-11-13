@@ -8,8 +8,6 @@ import { starlightSitemap } from './integrations/sitemap';
 import { vitePluginStarlightUserConfig } from './integrations/virtual-user-config';
 import { errorMap } from './utils/error-map';
 import { StarlightConfigSchema, type StarlightUserConfig } from './utils/user-config';
-import { rehypeRtlCodeSupport } from './integrations/code-rtl-support';
-import { createTranslationSystemFromFs } from './utils/translations-fs';
 
 export default function StarlightIntegration(opts: StarlightUserConfig): AstroIntegration {
 	const parsedConfig = StarlightConfigSchema.safeParse(opts, { errorMap });
@@ -27,7 +25,6 @@ export default function StarlightIntegration(opts: StarlightUserConfig): AstroIn
 		name: '@lansweeper/sweepy-starlight',
 		hooks: {
 			'astro:config:setup': ({ config, injectRoute, updateConfig }) => {
-				const useTranslations = createTranslationSystemFromFs(userConfig, config);
 				injectRoute({
 					pattern: '404',
 					entryPoint: '@lansweeper/sweepy-starlight/404.astro',
@@ -50,7 +47,6 @@ export default function StarlightIntegration(opts: StarlightUserConfig): AstroIn
 					},
 					markdown: {
 						remarkPlugins: [...starlightAsides()],
-						rehypePlugins: [rehypeRtlCodeSupport()],
 						shikiConfig:
 							// Configure Shiki theme if the user is using the default github-dark theme.
 							config.markdown.shikiConfig.theme !== 'github-dark' ? {} : { theme: 'css-variables' },

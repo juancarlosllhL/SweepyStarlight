@@ -28,7 +28,6 @@ declare module 'virtual:starlight/components' {
 	export const EditLink: typeof import('./components/EditLink.astro').default;
 
 	export const Header: typeof import('./components/Header.astro').default;
-	export const LanguageSelect: typeof import('./components/LanguageSelect.astro').default;
 	export const Search: typeof import('./components/Search.astro').default;
 	export const SiteTitle: typeof import('./components/SiteTitle.astro').default;
 	export const SocialIcons: typeof import('./components/SocialIcons.astro').default;
