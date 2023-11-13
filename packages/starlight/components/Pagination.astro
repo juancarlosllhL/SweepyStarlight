@@ -13,7 +13,7 @@ const isRtl = dir === 'rtl';
 			<a href={prev.href} rel="prev">
 				<Icon name={isRtl ? 'right-arrow' : 'left-arrow'} size="1.5rem" />
 				<span>
-					{'page.previousLink'}
+					Previous
 					<br />
 					<span class="link-title">{prev.label}</span>
 				</span>
@@ -25,7 +25,7 @@ const isRtl = dir === 'rtl';
 			<a href={next.href} rel="next">
 				<Icon name={isRtl ? 'left-arrow' : 'right-arrow'} size="1.5rem" />
 				<span>
-					{'page.nextLink'}
+					Next
 					<br />
 					<span class="link-title">{next.label}</span>
 				</span>

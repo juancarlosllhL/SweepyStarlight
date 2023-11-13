@@ -62,5 +62,3 @@ function getPaths(): Path[] {
 	}));
 }
 export const paths = getPaths();
-
-console.log(paths);

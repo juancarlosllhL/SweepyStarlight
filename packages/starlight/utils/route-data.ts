@@ -79,7 +79,7 @@ function getLastUpdated({ entry }: PageProps): Date | undefined {
 
 function getEditUrl({ entry, id }: PageProps): URL | undefined {
 	const { editUrl } = entry.data;
-	// If frontmatter value is false, editing is disabled for this page.
+
 	if (editUrl === false) return;
 
 	let url: string | undefined;

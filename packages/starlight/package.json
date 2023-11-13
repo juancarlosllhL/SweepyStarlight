@@ -2,10 +2,7 @@
   "name": "@lansweeper/sweepy-starlight",
   "version": "0.12.0",
   "description": "Build beautiful, high-performance documentation websites with Astro",
-  "scripts": {
-    "test": "vitest",
-    "test:coverage": "vitest run --coverage"
-  },
+  "scripts": {},
   "keywords": [
     "docs",
     "documentation",
@@ -89,10 +86,6 @@
     "./components/SocialIcons.astro": {
       "types": "./components/SocialIcons.astro.tsx",
       "import": "./components/SocialIcons.astro"
-    },
-    "./components/FallbackContentNotice.astro": {
-      "types": "./components/FallbackContentNotice.astro.tsx",
-      "import": "./components/FallbackContentNotice.astro"
     },
     "./components/Page.astro": {
       "types": "./components/Page.astro.tsx",

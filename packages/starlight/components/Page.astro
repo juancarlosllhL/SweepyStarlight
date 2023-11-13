@@ -12,7 +12,6 @@ import {
 	Banner,
 	ContentPanel,
 	PageTitle,
-	FallbackContentNotice,
 	Footer,
 	Header,
 	Head,
@@ -96,7 +95,6 @@ const pagefindEnabled =
 							<>
 								<ContentPanel {...Astro.props}>
 									<PageTitle {...Astro.props} />
-									{Astro.props.isFallback && <FallbackContentNotice {...Astro.props} />}
 								</ContentPanel>
 								<ContentPanel {...Astro.props}>
 									<MarkdownContent {...Astro.props}>

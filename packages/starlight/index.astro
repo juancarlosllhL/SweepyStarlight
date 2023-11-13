@@ -11,6 +11,7 @@ export async function getStaticPaths() {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { Content, headings } = await Astro.props.entry.render();
+console.log(Astro.props)
 const route = generateRouteData({ props: { ...Astro.props, headings }, url: Astro.url });
 ---
 

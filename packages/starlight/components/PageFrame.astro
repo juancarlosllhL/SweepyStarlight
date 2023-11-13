@@ -10,7 +10,7 @@ const { hasSidebar } = Astro.props;
 	<header class="header"><slot name="header" /></header>
 	{
 		hasSidebar && (
-			<nav class="sidebar" aria-label={'sidebarNav.accessibleLabel'}>
+			<nav class="sidebar" aria-label={'Menu'}>
 				<MobileMenuToggle {...Astro.props} />
 				<div id="starlight__sidebar" class="sidebar-pane">
 					<div class="sidebar-content sl-flex">

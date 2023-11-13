@@ -199,16 +199,6 @@ export function ComponentConfigSchema() {
 			PageTitle: z.string().default('@lansweeper/sweepy-starlight/components/PageTitle.astro'),
 
 			/**
-			 * Notice displayed to users on pages where a translation for the current language is not
-			 * available. Only used on multilingual sites.
-			 *
-			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/FallbackContentNotice.astro `FallbackContentNotice` default implementation}
-			 */
-			FallbackContentNotice: z
-				.string()
-				.default('@lansweeper/sweepy-starlight/components/FallbackContentNotice.astro'),
-
-			/**
 			 * Component rendered at the top of the page when `hero` is set in frontmatter. The default
 			 * implementation shows a large title, tagline, and call-to-action links alongside an optional image.
 			 *

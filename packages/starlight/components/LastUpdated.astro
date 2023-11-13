@@ -7,7 +7,7 @@ const { lastUpdated } = Astro.props;
 {
 	lastUpdated && (
 		<p>
-			{'page.lastUpdated'} <time datetime={lastUpdated.toISOString()}>{lastUpdated}</time>
+			Last updated: <time datetime={lastUpdated.toISOString()}>{lastUpdated}</time>
 		</p>
 	)
 }
