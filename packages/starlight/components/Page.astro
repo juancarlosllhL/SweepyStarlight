@@ -80,9 +80,7 @@ const pagefindEnabled =
 			{Astro.props.hasSidebar && <Sidebar slot="sidebar" {...Astro.props} />}
 			<TwoColumnContent {...Astro.props}>
 				<PageSidebar slot="right-sidebar" {...Astro.props} />
-				<main
-					data-pagefind-body={pagefindEnabled}
-				>
+				<main data-pagefind-body={pagefindEnabled}>
 					{/* TODO: Revisit how this logic flows. */}
 					<Banner {...Astro.props} />
 					{

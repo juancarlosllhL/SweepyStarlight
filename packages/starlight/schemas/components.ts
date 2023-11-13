@@ -24,7 +24,9 @@ export function ComponentConfigSchema() {
 			 *
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/ThemeProvider.astro `ThemeProvider` default implementation}
 			 */
-			ThemeProvider: z.string().default('@lansweeper/sweepy-starlight/components/ThemeProvider.astro'),
+			ThemeProvider: z
+				.string()
+				.default('@lansweeper/sweepy-starlight/components/ThemeProvider.astro'),
 
 			/*
 			BODY ----------------------------------------------------------------------------------------
@@ -59,7 +61,9 @@ export function ComponentConfigSchema() {
 			 *
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/MobileMenuToggle.astro `MobileMenuToggle` default implementation}
 			 */
-			MobileMenuToggle: z.string().default('@lansweeper/sweepy-starlight/components/MobileMenuToggle.astro'),
+			MobileMenuToggle: z
+				.string()
+				.default('@lansweeper/sweepy-starlight/components/MobileMenuToggle.astro'),
 
 			/**
 			 * Layout component wrapped around the main content column and right sidebar (table of contents).
@@ -68,7 +72,9 @@ export function ComponentConfigSchema() {
 			 *
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/TwoColumnContent.astro `TwoColumnContent` default implementation}
 			 */
-			TwoColumnContent: z.string().default('@lansweeper/sweepy-starlight/components/TwoColumnContent.astro'),
+			TwoColumnContent: z
+				.string()
+				.default('@lansweeper/sweepy-starlight/components/TwoColumnContent.astro'),
 
 			/*
 			HEADER --------------------------------------------------------------------------------------
@@ -129,7 +135,9 @@ export function ComponentConfigSchema() {
 			 *
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/MobileMenuFooter.astro `MobileMenuFooter` default implementation}
 			 */
-			MobileMenuFooter: z.string().default('@lansweeper/sweepy-starlight/components/MobileMenuFooter.astro'),
+			MobileMenuFooter: z
+				.string()
+				.default('@lansweeper/sweepy-starlight/components/MobileMenuFooter.astro'),
 
 			/*
 			TOC -----------------------------------------------------------------------------------------
@@ -147,7 +155,9 @@ export function ComponentConfigSchema() {
 			 *
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/TableOfContents.astro `TableOfContents` default implementation}
 			 */
-			TableOfContents: z.string().default('@lansweeper/sweepy-starlight/components/TableOfContents.astro'),
+			TableOfContents: z
+				.string()
+				.default('@lansweeper/sweepy-starlight/components/TableOfContents.astro'),
 			/**
 			 * Component that renders the current page’s table of contents on small (mobile) viewports.
 			 *
@@ -174,7 +184,9 @@ export function ComponentConfigSchema() {
 			 *
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/ContentPanel.astro `ContentPanel` default implementation}
 			 */
-			ContentPanel: z.string().default('@lansweeper/sweepy-starlight/components/ContentPanel.astro'),
+			ContentPanel: z
+				.string()
+				.default('@lansweeper/sweepy-starlight/components/ContentPanel.astro'),
 
 			/**
 			 * Component containing the `<h1>` element for the current page.
@@ -214,7 +226,9 @@ export function ComponentConfigSchema() {
 			 *
 			 * @see {@link https://github.com/withastro/starlight/blob/main/packages/starlight/components/MarkdownContent.astro `MarkdownContent` default implementation}
 			 */
-			MarkdownContent: z.string().default('@lansweeper/sweepy-starlight/components/MarkdownContent.astro'),
+			MarkdownContent: z
+				.string()
+				.default('@lansweeper/sweepy-starlight/components/MarkdownContent.astro'),
 
 			/*
 			CONTENT FOOTER ------------------------------------------------------------------------------

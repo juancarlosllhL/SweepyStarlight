@@ -7,7 +7,6 @@ import { SidebarItemSchema } from '../schemas/sidebar';
 import { SocialLinksSchema } from '../schemas/social';
 import { TableOfContentsSchema } from '../schemas/tableOfContents';
 
-
 const UserConfigSchema = z.object({
 	/** Title for your website. Will be used in metadata and as browser tab title. */
 	title: z
@@ -121,13 +120,11 @@ const UserConfigSchema = z.object({
 		.describe('Will be used as title delimiter in the generated `<title>` tag.'),
 });
 
-export const StarlightConfigSchema = UserConfigSchema.strict().transform(
-	({...config }) => {
-		return {
-			...config,
-		} as const;
-	}
-);
+export const StarlightConfigSchema = UserConfigSchema.strict().transform(({ ...config }) => {
+	return {
+		...config,
+	} as const;
+});
 
 export type StarlightConfig = z.infer<typeof StarlightConfigSchema>;
 export type StarlightUserConfig = z.input<typeof StarlightConfigSchema>;
