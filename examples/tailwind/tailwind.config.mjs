@@ -1,5 +1,5 @@
 import colors from 'tailwindcss/colors';
-import starlightPlugin from '@astrojs/starlight-tailwind';
+import starlightPlugin from '@lansweeper/sweepy-starlight-tailwind';
 
 /** @type {import('tailwindcss').Config} */
 export default {

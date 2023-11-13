@@ -24,17 +24,17 @@ export default function StarlightIntegration(opts: StarlightUserConfig): AstroIn
 	const userConfig = parsedConfig.data;
 
 	const Starlight: AstroIntegration = {
-		name: '@astrojs/starlight',
+		name: '@lansweeper/sweepy-starlight',
 		hooks: {
 			'astro:config:setup': ({ config, injectRoute, updateConfig }) => {
 				const useTranslations = createTranslationSystemFromFs(userConfig, config);
 				injectRoute({
 					pattern: '404',
-					entryPoint: '@astrojs/starlight/404.astro',
+					entryPoint: '@lansweeper/sweepy-starlight/404.astro',
 				});
 				injectRoute({
 					pattern: '[...slug]',
-					entryPoint: '@astrojs/starlight/index.astro',
+					entryPoint: '@lansweeper/sweepy-starlight/index.astro',
 				});
 				const integrations: AstroIntegration[] = [];
 				if (!config.integrations.find(({ name }) => name === '@astrojs/sitemap')) {

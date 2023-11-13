@@ -6,7 +6,6 @@ import { TableOfContentsSchema } from './schemas/tableOfContents';
 import { BadgeConfigSchema } from './schemas/badge';
 import { HeroSchema } from './schemas/hero';
 import { SidebarLinkItemHTMLAttributesSchema } from './schemas/sidebar';
-export { i18nSchema } from './schemas/i18n';
 
 export function docsSchema() {
 	return (context: SchemaContext) =>

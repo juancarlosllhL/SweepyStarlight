@@ -11,7 +11,7 @@ import plugin from 'tailwindcss/plugin';
  * @example
  * // tailwind.config.mjs
  * import colors from 'tailwindcss/colors';
- * import starlightPlugin from '@astrojs/starlight-tailwind';
+ * import starlightPlugin from '@lansweeper/sweepy-starlight-tailwind';
  *
  * export default {
  *   plugins: [
