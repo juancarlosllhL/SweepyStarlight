@@ -1,6 +1,7 @@
 import type { GetStaticPathsItem } from 'astro';
 import { type CollectionEntry, getCollection } from 'astro:content';
 import { validateLogoImports } from './validateLogoImports';
+import { slugToParam } from './slugs';
 
 // Validate any user-provided logos imported correctly.
 // We do this here so all pages trigger it and at the top level so it runs just once.
@@ -56,8 +57,10 @@ export const routes = getRoutes();
 
 function getPaths(): Path[] {
 	return routes.map((route) => ({
-		params: { slug: route.slug },
+		params: { slug: slugToParam(route.slug) },
 		props: route,
 	}));
 }
 export const paths = getPaths();
+
+console.log(paths);

@@ -11,6 +11,7 @@ import type {
 	SidebarItem,
 	SidebarLinkItem,
 } from '../schemas/sidebar';
+import { slugToPathname } from './slugs';
 
 const DirKey = Symbol('DirKey');
 
@@ -106,15 +107,12 @@ function groupFromAutogenerateConfig(
 const isAbsolute = (link: string) => /^https?:\/\//.test(link);
 
 /** Create a link entry from a user config object. */
-function linkFromConfig(
-	item: SidebarLinkItem,
-	currentPathname: string
-) {
+function linkFromConfig(item: SidebarLinkItem, currentPathname: string) {
 	let href = item.link;
 	if (!isAbsolute(href)) {
 		href = ensureLeadingAndTrailingSlashes(href);
 	}
-	const label =  item.label;
+	const label = item.label;
 	return makeLink(href, label, currentPathname, item.badge, item.attrs);
 }
 
@@ -167,7 +165,7 @@ function treeify(routes: Route[]): Dir {
 /** Create a link entry for a given content collection entry. */
 function linkFromRoute(route: Route, currentPathname: string): Link {
 	return makeLink(
-		route.slug,
+		slugToPathname(route.slug),
 		route.entry.data.sidebar.label || route.entry.data.title,
 		currentPathname,
 		route.entry.data.sidebar.badge,
@@ -187,13 +185,11 @@ function getOrder(routeOrDir: Route | Dir): number {
 }
 
 /** Sort a directory’s entries by user-specified order or alphabetically if no order specified. */
-function sortDirEntries(
-	dir: [string, Dir | Route][],
-): [string, Dir | Route][] {
+function sortDirEntries(dir: [string, Dir | Route][]): [string, Dir | Route][] {
 	return dir.sort(([_, a], [__, b]) => {
 		const [aOrder, bOrder] = [getOrder(a), getOrder(b)];
 		// Pages are sorted by order in ascending order.
-		 return aOrder < bOrder ? -1 : 1;
+		return aOrder < bOrder ? -1 : 1;
 	});
 }
 
@@ -231,11 +227,7 @@ function dirToItem(
 }
 
 /** Create a sidebar entry for a given content directory. */
-function sidebarFromDir(
-	tree: Dir,
-	currentPathname: string,
-	collapsed: boolean
-) {
+function sidebarFromDir(tree: Dir, currentPathname: string, collapsed: boolean) {
 	return sortDirEntries(Object.entries(tree)).map(([key, dirOrRoute]) =>
 		dirToItem(dirOrRoute, key, key, currentPathname, collapsed)
 	);

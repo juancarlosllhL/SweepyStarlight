@@ -54,12 +54,12 @@ function getToC({ entry, headings }: PageProps) {
 		entry.data.template === 'splash'
 			? false
 			: entry.data.tableOfContents !== undefined
-			? entry.data.tableOfContents
-			: config.tableOfContents;
+			  ? entry.data.tableOfContents
+			  : config.tableOfContents;
 	if (!tocConfig) return;
 	return {
 		...tocConfig,
-		items: generateToC(headings, { ...tocConfig, title: "tableOfContents.overview" }),
+		items: generateToC(headings, { ...tocConfig, title: 'tableOfContents.overview' }),
 	};
 }
 
