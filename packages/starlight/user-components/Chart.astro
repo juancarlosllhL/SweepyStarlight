@@ -1,0 +1,46 @@
+---
+const { data, type } = Astro.props;
+
+const stringData = JSON.stringify(data);
+---
+
+<astro-chart data-message={stringData} data-type={type}>
+	<canvas id="acquisitions"></canvas>
+</astro-chart>
+
+<script>
+	class AstroChart extends HTMLElement {
+		constructor() {
+			super();
+			window.addEventListener('DOMContentLoaded', () => {
+				const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+				onIdle(async () => {
+					const { Chart } = await import('chart.js/auto');
+
+					const parsedData = JSON.parse(this.dataset.message!);
+					const canvas = document.getElementById('acquisitions') as HTMLCanvasElement;
+					if (!canvas) {
+						return;
+					}
+					canvas.style.width = '100%';
+					canvas.style.height = '400px';
+					canvas.width = canvas.offsetWidth;
+					canvas.height = canvas.offsetHeight;
+					new Chart(canvas as any, {
+						type: this.dataset.type,
+						data: {
+							labels: parsedData.map((row: any) => row.year),
+							datasets: [
+								{
+									label: 'Acquisitions by year',
+									data: parsedData.map((row: any) => row.count),
+								},
+							],
+						},
+					});
+				});
+			});
+		}
+	}
+	customElements.define('astro-chart', AstroChart);
+</script>

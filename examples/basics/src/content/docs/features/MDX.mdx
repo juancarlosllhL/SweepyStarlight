@@ -3,28 +3,27 @@ title: MDX
 description: MDX features
 ---
 
-# Pluto
+import { Chart, Figjam } from '@lansweeper/sweepy-starlight/components';
 
-Pluto is a dwarf planet in the Kuiper belt.
+<Figjam url="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FuekPm6p9ru0ittFpK7hSdj%2FAnalytics-architecture%3Ftype%3Dwhiteboard%26node-id%3D0%253A1%26t%3DzfwXqDSZFO0mCU5B-1" />
 
-## Contents
+<Chart
+	type="bar"
+	data={[
+		{ year: 2010, count: 10 },
+		{ year: 2011, count: 20 },
+		{ year: 2012, count: 15 },
+		{ year: 2013, count: 25 },
+		{ year: 2014, count: 22 },
+		{ year: 2015, count: 30 },
+		{ year: 2016, count: 28 },
+	]}
+/>
 
-## History
-
-### Discovery
-
-In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
-position of…
-
-### Name and symbol
-
-The name Pluto is for the Roman god of the underworld, from a Greek epithet for
-Hades…
-
-### Planet X disproved
-
-Once Pluto was found, its faintness and lack of a viewable disc cast doubt…
-
-## Orbit
-
-Pluto’s orbital period is about 248 years…
+````mermaid
+ graph TD;
+   AppName-->app/view/main/pages;
+   app/view/main/pages-->PageName;
+   PageName-->PageNameModel.js;
+\```
+````
