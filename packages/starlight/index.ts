@@ -3,6 +3,9 @@ import type { AstroIntegration, AstroUserConfig } from 'astro';
 import { spawn } from 'node:child_process';
 import { dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import auth from 'auth-astro';
+import node from '@astrojs/node';
+
 import { starlightAsides } from './integrations/asides';
 import { starlightSitemap } from './integrations/sitemap';
 import { vitePluginStarlightUserConfig } from './integrations/virtual-user-config';
@@ -40,7 +43,14 @@ export default function StarlightIntegration(opts: StarlightUserConfig): AstroIn
 				if (!config.integrations.find(({ name }) => name === '@astrojs/mdx')) {
 					integrations.push(mdx());
 				}
+				// auth
+				integrations.push(auth());
+
 				const newConfig: AstroUserConfig = {
+					output: 'server',
+					adapter: node({
+						mode: 'standalone',
+					}),
 					integrations,
 					vite: {
 						plugins: [vitePluginStarlightUserConfig(userConfig, config)],

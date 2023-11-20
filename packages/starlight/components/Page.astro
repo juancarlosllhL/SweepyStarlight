@@ -35,6 +35,10 @@ const pagefindEnabled =
 	Astro.props.entry.slug !== '404' &&
 	!Astro.props.entry.slug.endsWith('/404') &&
 	Astro.props.entry.data.pagefind !== false;
+
+import { getSession } from 'auth-astro/server';
+const session = await getSession(Astro.request);
+console.log(session);
 ---
 
 <html

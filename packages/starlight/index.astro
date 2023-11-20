@@ -1,5 +1,6 @@
 ---
 import type { InferGetStaticPropsType } from 'astro';
+import { SignIn, SignOut } from 'auth-astro/components';
 import { generateRouteData } from './utils/route-data';
 import { paths } from './utils/routing';
 
@@ -12,6 +13,14 @@ export async function getStaticPaths() {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { Content, headings } = await Astro.props.entry.render();
 const route = generateRouteData({ props: { ...Astro.props, headings }, url: Astro.url });
+import { getSession } from 'auth-astro/server';
+const session = await getSession(Astro.request);
+export const prerender = true;
 ---
 
-<Page {...route}><Content /></Page>
+<Page {...route}>
+	<Content />
+</Page>
+{session ? <h1>Loged</h1> : <h1>No log</h1>}
+<SignIn provider="github">Login</SignIn>
+<SignOut>Logout</SignOut>
