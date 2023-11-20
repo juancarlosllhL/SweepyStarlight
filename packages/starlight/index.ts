@@ -3,7 +3,6 @@ import type { AstroIntegration, AstroUserConfig } from 'astro';
 import { spawn } from 'node:child_process';
 import { dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import auth from 'auth-astro';
 import node from '@astrojs/node';
 
 import { starlightAsides } from './integrations/asides';
@@ -43,11 +42,9 @@ export default function StarlightIntegration(opts: StarlightUserConfig): AstroIn
 				if (!config.integrations.find(({ name }) => name === '@astrojs/mdx')) {
 					integrations.push(mdx());
 				}
-				// auth
-				integrations.push(auth());
 
 				const newConfig: AstroUserConfig = {
-					output: 'server',
+					output: 'static',
 					adapter: node({
 						mode: 'standalone',
 					}),

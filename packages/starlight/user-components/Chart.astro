@@ -27,7 +27,7 @@ const stringData = JSON.stringify(data);
 					canvas.width = canvas.offsetWidth;
 					canvas.height = canvas.offsetHeight;
 					new Chart(canvas as any, {
-						type: this.dataset.type,
+						type: this.dataset.type as any,
 						data: {
 							labels: parsedData.map((row: any) => row.year),
 							datasets: [
